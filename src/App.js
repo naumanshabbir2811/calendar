@@ -1,23 +1,24 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import CalendarComponent from './components/CalendarComponent';
 
 function App() {
+  const [data,setData] =React.useState([])
+  const getApiData = async() =>{
+    const url = "https://calendarific.com/api/v2/holidays?&api_key=8b3ec351e7a4bea5ab34323761dd950c3a6797dd&country=pk&year=2022"
+    const response = await fetch(url,{
+      method:"GET"
+    })
+    const data  = await response.json()
+    setData(data.response.holidays)
+  }
+  React.useEffect(()=>{
+
+    getApiData()
+  },[])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <CalendarComponent data={data}/>
     </div>
   );
 }
